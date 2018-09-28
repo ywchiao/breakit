@@ -1,3 +1,6 @@
+
+### Node.js
+
 # Logs
 logs
 *.log
@@ -59,3 +62,56 @@ typings/
 
 # next.js build output
 .next
+
+### in common
+log/
+out/
+
+### macOS
+
+# general
+.AppleDouble
+.DS_Store
+.LSOverride
+
+### Windows
+
+# thumbnail
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+
+# shortcuts
+*.lnk
+
+### Vim
+
+# Swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+
+### Languages
+
+# ECMA/JavaScript htdoc
+htdocs/**/js/*.js
+htdocs/**/js/*.map
+
+# LaTeX files
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.vrb
+
+# generic files
+*~
+*.lock
+*.old
+*.out
+*.swp
+
+# .gitignore
