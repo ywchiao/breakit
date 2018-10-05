@@ -1,0 +1,23 @@
+---
+title: 附錄 --- 開發工具簡介
+author: 喬逸偉 (Yiwei Chiao)
+#thanks:
+papersize: a4
+fontsize: 12pt
+geometry: margin=2cm
+numbersections: true
+urlcolor: BlueViolet
+linestretch: 1.2
+#links-as-notes: true
+header-includes:
+    - \usepackage{booktabs}
+    - \usepackage{numprint, xspace, paralist}
+    - \usepackage{hyperref}
+    - \usepackage{cleveref}
+    - \usepackage[utf8]{inputenc}
+    - \usepackage{fixltx2e}
+    - \usepackage[expert]{mathdesign}
+    - \usepackage[T1]{fontenc}
+    - \usepackage{microtype}
+    - \usepackage{epigraph}
+---

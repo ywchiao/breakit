@@ -1,18 +1,31 @@
+/**
+ *  @file       styles.css
+ *  @brief      The default .css file of BreakIt.
+ *  @author     Yiwei Chiao (ywchiao@gmail.com)
+ *  @date       10/05/2018 created.
+ *  @date       10/05/2018 last modified.
+ *  @since      0.1.0
+ *  @copyright  MIT, © 2018 Yiwei Chiao
+ *  @details
+ *
+ *  The default .css file of BreakIt.
+ */
+
 html {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    background-color: #ffffe7;
-    height: 100%;
+  background-color: #ffffe7;
+  height: 100vh;
 }
 
 header {
-    background-color: #c7c7f7;
+  background-color: #c7c7f7;
 }
 
 nav {
-    background-color: #c7f7f7;
+  background-color: #c7f7f7;
 }
 
 /*
@@ -44,30 +57,34 @@ nav > ul > li:hover [id*=drop_] {
 }
 
 aside {
-    background-color: #f7c7c7;
-    width: 15%;
-    float: left;
+  background-color: #f7c7c7;
+  /*
+  width: 15%;
+  float: left;
+  */
 }
 
 article {
-    background-color: #c7c7c7;
-    width: 85%;
-    float: left;
+  background-color: #c7c7c7;
+  /*
+  width: 85%;
+  float: left;
+  */
 }
 
 section {
-    background-color: #c7f7c7;
+  background-color: #c7f7c7;
 }
 
 footer {
-    background-color: #e7e7e7;
+  background-color: #e7e7e7;
 }
 
 .flexbox {
     display: flex;
 }
 
-.blacktext{
+.blacktext {
     color: #0f0f0f;
 }
 
@@ -80,7 +97,7 @@ footer {
 }
 
 .irontext {
-    color: #efefaf;
+    color: #4e4e5f;
 }
 
 .browntext {
@@ -93,6 +110,34 @@ footer {
 
 .lighttext {
     color: #9f9f7f;
+}
+
+.card {
+  border-radius: 12px;
+  border: 1px solid azure;
+  padding: .25rem .5rem;
+  margin: 1rem 3rem;
+  box-shadow: 3px 5px;
+  background-color: #ffefcf;
+  opacity: .75;
+  text-align: center;
+}
+
+.card_header {
+  position: relative;
+  line-height: 2rem;
+  height: 2rem;
+  margin: 1.0rem 0 .25rem 0;
+  text-align: left;
+}
+
+.card_content {
+  display: grid;
+  grid: repeat(5, 1fr) / repeat(5, 1fr);
+  margin: .25rem;
+  padding: 1rem 0;
+  border-top: 3px solid #aaaacc;
+  border-bottom: 3px solid #aaaacc;
 }
 
 /*
@@ -134,9 +179,104 @@ footer {
     background-color: Salmon;
 }
 
-#about {
-    float: right;
-    margin: 0px 2em 0px 0px;
+@keyframes slide_in {
+  from {
+    margin-left: 100%;
+    width: 100%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
+}
+
+@keyframes move_eye {
+  from {
+    margin-left: -20%;
+  }
+
+  to {
+    margin-left: 100%;
+  }
+}
+
+.welcome {
+  background-color: black;
+  height: 3.5rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.welcome_message {
+  width: 100%;
+  text-align: center;
+  margin-right: 2%;
+  padding: .25rem;
+  color: white;
+  float: left;
+}
+
+.cylon_eye {
+  background-color: red;
+  background-image: linear-gradient(to right,
+      rgba(0, 0, 0, .9) 25%,
+      rgba(0, 0, 0, .1) 50%,
+      rgba(0, 0, 0, .9) 75%
+  );
+
+  color: white;
+  height: 100%;
+  width: 20%;
+
+  animation: 5s linear alternate infinite move_eye;
+}
+
+.slide_in {
+  animation: 3s ease alternate 1 slide_in;
+  overflow: hidden;
+}
+
+/*
+ * 頁面的根 container
+ */
+.site_container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/*
+ * 佔據所有能佔的 (垂直) 空間的 site_body
+ */
+.site_body {
+  flex: 1 0 auto;
+/*  padding: 0 1rem; */
+}
+
+.site_banner {
+  padding: 1rem;
+}
+
+.site_status {
+  background-color: #696969;
+  color: #f0fff0;
+  padding: 0 1rem;
+}
+
+/*
+ * 設置固定在底部的 site footer。
+ */
+.site_footer {
+  display: flex;
+  flex-shrink: 0;
+  padding: 1rem;
+  color: SteelBlue;
+  background: MidnightBlue;
+}
+
+.float_right {
+  margin-left: auto;
 }
 
 /*
@@ -147,8 +287,16 @@ footer {
     display: block;
 }
 
+#cursor_x {
+  color: #00ffff;
+}
+
+#cursor_y {
+  color: #ffff00;
+}
+
 .milky {
     background-color: #ffffea;
 }
 
-// styles.css
+/* styles.css */
