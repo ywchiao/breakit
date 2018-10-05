@@ -1,0 +1,154 @@
+html {
+    height: 100%;
+}
+
+body {
+    background-color: #ffffe7;
+    height: 100%;
+}
+
+header {
+    background-color: #c7c7f7;
+}
+
+nav {
+    background-color: #c7f7f7;
+}
+
+/*
+ * 選擇 nav 下面的 ul 元素下的 *所有* li 元素
+ */
+nav > ul > li {
+    display: inline-block;
+    height: 2em;
+    min-width: 4em;
+    line-height: 2em;
+    text-align: center;
+    // 上下 pading: 0; 左右 padding: 0.5 em;
+    padding: 0px .5em;
+    // 上下 pading: 0; 左右 padding: 0.25 em;
+    margin: 0px .25em;
+    border: none;
+    background-color: bisque;
+}
+
+/*
+ * 當滑鼠游標移到 nav > ul > li 上時，更改 *背景顏色*
+ */
+nav > ul > li:hover {
+    background-color: #dfdfdf;
+}
+
+nav > ul > li:hover [id*=drop_] {
+    display: block;
+}
+
+aside {
+    background-color: #f7c7c7;
+    width: 15%;
+    float: left;
+}
+
+article {
+    background-color: #c7c7c7;
+    width: 85%;
+    float: left;
+}
+
+section {
+    background-color: #c7f7c7;
+}
+
+footer {
+    background-color: #e7e7e7;
+}
+
+.flexbox {
+    display: flex;
+}
+
+.blacktext{
+    color: #0f0f0f;
+}
+
+.redtext {
+    color: #ff3333;
+}
+
+.bluetext {
+    color: #3333ff;
+}
+
+.irontext {
+    color: #efefaf;
+}
+
+.browntext {
+    color: #9f5f5f;
+}
+
+.sectext {
+    color: #7f7fef;
+}
+
+.lighttext {
+    color: #9f9f7f;
+}
+
+/*
+ * 下拉式 (drop-down) 功能表
+ */
+.drop_box {
+    // 預設不顯示;
+    display: none;
+    // 去除 ul.li 的項目標示;
+    list-style-type: none;
+    // 位置跟隨它的父元素;
+    position: absolute;
+    background-color: #f9f9f9;
+    padding: 0px;
+    margin: 0px .25em;
+}
+
+/*
+ * 下拉式功能表裡的 *li* (list item)
+ * 選單項目屬性設定
+ */
+.drop_box ul li {
+    min-width: 4em;
+    text-align: center;
+    padding: 0px .5em;
+    margin: .25em 0px;
+    border: none;
+    background-color: bisque;
+}
+
+/*
+ * 當滑鼠游標移至
+ * 下拉式功能表裡的 *li* (list item)
+ * 選單項目時，
+ * 更改屬性設定
+ */
+.drop_box li:hover {
+    color: DodgerBlue;
+    background-color: Salmon;
+}
+
+#about {
+    float: right;
+    margin: 0px 2em 0px 0px;
+}
+
+/*
+ * 當滑鼠游標移至 *關於* (about) 時，將
+ * 對應的 drop_box 顯示出來
+ */
+#about:hover #drop_about {
+    display: block;
+}
+
+.milky {
+    background-color: #ffffea;
+}
+
+// styles.css

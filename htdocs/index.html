@@ -8,33 +8,71 @@
     <meta name="author" content="Yiwei Chiao">
     <meta name="description" content="A web-based Breakout (打磚塊) game.">
     <meta name="keywords" content="Javascript, game, Breakout">
+
+    <link rel="stylesheet" href="assets/css/styles.css">
   </head>
-  <body style="background-color: #ffffe7;">
-    <header style="background-color: #c7c7f7;">
-      <h1>BreakIt:</h1>
+  <body>
+    <header id="page_top">
+      <h1 class="irontext">BreakIt:</h1>
       <h3>一個 html5/css3/node.js 的練習專案</h3>
     </header>
-    <nav style="background-color: #c7f7f7;">
+    <nav>
       <h2>NAV</h2>
       <h3>功能表單 navigation</h3>
+      <ul>
+        <li id="sec1">第一頁
+          <ul class="drop_box" id="drop_1">
+            <li><a href="#sec1">Section 1</a></li>
+          </ul>
+        </li>
+        <li>第二頁
+          <ul class="drop_box" id="drop_2">
+            <li><a href="#sec2">Section 2</a></li>
+          </ul>
+        </li>
+        <li>第三頁
+          <ul class="drop_box" id="drop_3">
+            <li><a href="#sec3">Section 3</a></li>
+          </ul>
+        </li>
+        <li>第四頁</li>
+        <li>第五頁</li>
+        <li id="about">關  於
+          <ul class="drop_box" id="drop_about">
+            <li>小組成員</li>
+            <li>工作分工</li>
+          </ul>
+        </li>
+      </ul>
     </nav>
-    <aside style="background-color: #f7c7c7; width: 15%; height: 500px; float: left;">
-      <h2>ASIDE</h2><h3>側欄</h3>
-    </aside>
-    <article style="background-color: #c7c7c7; width: 85%; height: 500px; float: left;">
-      <h2>ARTICLE</h2>
-      主題文件
-      <section style="background-color: #c7f7c7; height: 150px;">
-        <h2>SECTION</h2>
-        第一小節
-      </section>
-      <section style="background-color: #c7f7c7; height: 150px;">
-        <h2>SECTION</h2>
-        第二小節
-      </section>
-    </article>
-    <footer style="background-color: #e7e7e7;">
-      <h2>FOOTER</h2><small>&copy; Copyright 2018，佛光大學創意與科技學院<small>
+    <div class="flexbox">
+      <aside>
+        <h2 class="irontext">ASIDE</h2>
+        <h3>側欄</h3>
+      </aside>
+      <article>
+        <h2 class="bluetext">ARTICLE</h2>
+        主題文件
+        <section class="browntext" id="sec1">
+          <h2 class="redtext">SECTION</h2>
+          第一小節
+          <button type="button">
+            <a href="#page_top">回上方</a>
+          </button>
+        </section>
+        <section class="browntext milky" id="sec2">
+          <h2 class="redtext">SECTION</h2>
+          第二小節
+        </section>
+        <section class="browntext milky" id="sec3">
+          <h2 class="redtext">SECTION</h2>
+          第三小節
+        </section>
+      </article>
+    </div>
+    <footer class="lighttext">
+      <h2 class="blacktext">FOOTER</h2>
+      <small>&copy; Copyright 2018，佛光大學創意與科技學院<small>
     </footer>
   </body>
 </html>
