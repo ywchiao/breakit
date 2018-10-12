@@ -1,6 +1,6 @@
 <!---
   @file       chapter_appendix.md
-  @date       10/05/2018 created.
+  @date       10/12/2018 created.
   @copyright  CC-BY, (C) 2017 Yiwei Chiao
   @detail
     This file is machine-generated. DONOT MODIFY IT DIRECTLY.
@@ -313,6 +313,20 @@
 [wikiText]: https://en.wikipedia.org/wiki/Text_(literary_theory)
 [wikiXML]: https://en.wikipedia.org/wiki/XML
 [wikiYAML]: https://en.wikipedia.org/wiki/YAML
+[chrome]: https://www.google.com.tw/chrome
+[firefox]: https://www.mozilla.org/zh-TW/firefox/
+[jade]: http://jade-lang.com/
+[jinja]: http://jinja.pocoo.org/
+[mdnDOM]: https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
+[mdnSVG]: https://developer.mozilla.org/zh-TW/docs/Web/SVG
+[mdnXML]: https://developer.mozilla.org/en-US/docs/XML_introduction
+[PHP]: https://secure.php.net/
+[Python]: https://www.python.org/
+[Ruby]: https://www.ruby-lang.org/zh_tw/
+[twig]: https://twig.symfony.com/
+[wikiERuby]: https://en.wikipedia.org/wiki/ERuby
+[wikiJSP]: https://en.wikipedia.org/wiki/JavaServer_Pages
+[wikiTemplatEngine]: https://en.wikipedia.org/wiki/Template_processor
 [Unicode]: https://zh.wikipedia.org/wiki/Unicode
 [utf8]: https://zh.wikipedia.org/wiki/UTF-8
 [sokobanjs]: https://github.com/ywchiao/sokoban.js.git
