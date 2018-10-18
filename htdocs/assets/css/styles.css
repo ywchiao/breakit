@@ -3,7 +3,7 @@
  *  @brief      The default .css file of BreakIt.
  *  @author     Yiwei Chiao (ywchiao@gmail.com)
  *  @date       10/11/2018 created.
- *  @date       10/11/2018 last modified.
+ *  @date       10/12/2018 last modified.
  *  @version    0.1.0
  *  @since      0.1.0
  *  @copyright  MIT, © 2018 Yiwei Chiao
@@ -113,6 +113,7 @@ footer {
  * 設置固定在底部的 site footer。
  */
 .site-footer {
+  display: flex;
   background: MidnightBlue;
   color: SteelBlue;
   padding: 1rem;
