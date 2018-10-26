@@ -1,6 +1,6 @@
 <!---
   @file       chapter_appendix.md
-  @date       10/19/2018 created.
+  @date       10/26/2018 created.
   @copyright  CC-BY, (C) 2017 Yiwei Chiao
   @detail
     This file is machine-generated. DONOT MODIFY IT DIRECTLY.
@@ -318,7 +318,7 @@
 [jade]: http://jade-lang.com/
 [jinja]: http://jinja.pocoo.org/
 [mdnDOM]: https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
-[mdnSVG]: https://developer.mozilla.org/zh-TW/docs/Web/SVG
+[mdnSVG]: https://developer.mozilla.org/kab/docs/Web/SVG
 [mdnXML]: https://developer.mozilla.org/en-US/docs/XML_introduction
 [PHP]: https://secure.php.net/
 [Python]: https://www.python.org/
@@ -327,6 +327,8 @@
 [wikiERuby]: https://en.wikipedia.org/wiki/ERuby
 [wikiJSP]: https://en.wikipedia.org/wiki/JavaServer_Pages
 [wikiTemplatEngine]: https://en.wikipedia.org/wiki/Template_processor
+[mdnCanvas2D]: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+[mdnWebGL]: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API
 [Unicode]: https://zh.wikipedia.org/wiki/Unicode
 [utf8]: https://zh.wikipedia.org/wiki/UTF-8
 [sokobanjs]: https://github.com/ywchiao/sokoban.js.git

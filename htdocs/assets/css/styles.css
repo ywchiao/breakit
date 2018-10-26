@@ -66,6 +66,7 @@ footer {
 }
 
 .card-content {
+  background-color: #fffaf0;
   margin: .25rem;
   padding: 1rem 0;
   border-top: 3px solid #aaaacc;
