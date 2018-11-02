@@ -1,6 +1,6 @@
 <!---
   @file       chapter_05.md
-  @date       10/26/2018 created.
+  @date       11/02/2018 created.
   @copyright  CC-BY, (C) 2017 Yiwei Chiao
   @detail
     This file is machine-generated. DONOT MODIFY IT DIRECTLY.
@@ -194,18 +194,18 @@
   的子元素，再往外 (上) 產生親 (parent) 元素，再利用 `appendChild()`
   將親/子元素結合，重覆到結構完成。
 
-### [canvas][mdnCanvas] APIs
+### [canvas][mdnCanvas2D] APIs
 
-  [canvas][mdnCanvas] 是 [HTML][mdnHTML5] 為了處理 Web 繪圖所提供
+  [canvas][mdnCanvas2D] 是 [HTML][mdnHTML5] 為了處理 Web 繪圖所提供
   的數個解決方案之一，主要針對 2D 繪圖；其它還有為了向量圖 (vector
   graph) 的 [SVG][mdnSVG] 與 3D 繪圖 (支援繪圖卡加速) 的 [webGL][mdnWebGL]。
-  [Breakit][breakit] 專案只使用 [canvas][mdnCanvas] 的 2D 繪圖。
+  [Breakit][breakit] 專案只使用 [canvas][mdnCanvas2D] 的 2D 繪圖。
 
-  [canvas][mdnCanvas] 繪圖的流程很簡單：
+  [canvas][mdnCanvas2D] 繪圖的流程很簡單：
 
  1. 建立一個 `<canvas>` 物件
 
- 1. 由這個 `<canvas>` 物件取得綁定的 `ConvasRenderingContext2D`
+ 1. 由這個 `<canvas>` 物件取得綁定的 `CanvasRenderingContext2D`
   繪圖物件，以下簡稱 'ctx2d'。
 
  1. 呼叫 `ctx2d` 提供的 2D 繪圖 APIs，在綁定的 `<canvas>` 物件上作畫。

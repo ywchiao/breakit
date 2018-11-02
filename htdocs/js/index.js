@@ -3,7 +3,7 @@
  *  @brief      The entry file of BreakIt.
  *  @author     Yiwei Chiao (ywchiao@gmail.com)
  *  @date       10/11/2018 created.
- *  @date       10/26/2018 last modified.
+ *  @date       11/01/2018 last modified.
  *  @version    0.1.0
  *  @since      0.1.0
  *  @copyright  MIT, © 2018 Yiwei Chiao
@@ -18,7 +18,7 @@ let paintPaddle = function (ctx) {
   ctx.save();
 
   ctx.fillStyle = 'midnightblue';
-  ctx.fillRect(288, 454, 64, 16);
+  ctx.fillRect(272, 454, 96, 16);
 
   ctx.restore();
 };
@@ -27,15 +27,15 @@ let paintPaddle = function (ctx) {
 let paintBricks = function (ctx) {
   ctx.save();
 
-  let width = 12;
-  let height = 8;
+  let width = 8;
+  let height = 5;
 
   for (let x = 0; x < width; x ++) {
     for (let y = 0; y < height; y++) {
       ctx.fillStyle =
         `rgb(${Math.floor(255 - 42.5 * x)}, ${Math.floor(255 - 42.5 * y)}, 0)`;
 
-      ctx.fillRect((x * 52) + 10, (y * 20) + 10, 48, 16);
+      ctx.fillRect((x * 80) + 8, (y * 24) + 10, 64, 16);
     }
   }
 
@@ -43,8 +43,12 @@ let paintBricks = function (ctx) {
 };
 
 // 重繪 *遊戲盤面*
-let paint = function (ctx) {
+let paint = function () {
+  // 取得能在 canvas 上繪圖的 context2d 物件
+  let ctx = document.querySelector('canvas').getContext('2d');
+
   // 將圖紙填滿背景色
+  ctx.fillStyle = 'mintcream';
   ctx.fillRect(0, 0, 640, 480);
 
   ctx.strokeStyle = 'slateblue';
@@ -55,6 +59,83 @@ let paint = function (ctx) {
  
   // 繪出擊球板
   paintPaddle(ctx);
+
+  // 繪球
+  ball.paint(ctx);
+};
+
+let ball = {
+  _elapsed: 0,
+
+  x: 320,
+
+  y: 240,
+
+  offX: -2,
+
+  offY: 2,
+
+  paint: function (ctx) {
+    ctx.save();
+
+    ctx.fillStyle = 'red';
+
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 6, 0, 2 * Math.PI, true);
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.restore();
+  },
+
+  update: function (drifts) {
+    this._elapsed += drifts;
+   
+    while (this._elapsed > 16) {
+      this.x += this.offX;
+      this.y += this.offY;
+
+      if (this.x < 20 || this.x > 620) {
+        this.offX = - this.offX;
+      }
+
+      if (this.y < 20 || this.y > 460) {
+        this.offY = - this.offY;
+      }
+
+      this._elapsed -= 16;
+    }
+  }
+};
+
+let breakIt = {
+  _loop: function (ticks) {
+    if (!this._startAt) {
+      this._startAt = ticks;
+    };
+
+    this.update(ticks);
+    paint();
+
+    requestAnimationFrame(this._loop.bind(this));
+  },
+
+  pause: function () {
+    cancelAnimationFrame(this._tickHandler);
+  },
+
+  start: function () {
+    this._tickHandler = requestAnimationFrame(this._loop.bind(this));
+  },
+
+  update: function (ticks) {
+    if (this._lastUpdate) {
+      ball.update(ticks - this._lastUpdate);
+    };
+
+    this._lastUpdate = ticks;
+  }
 };
 
 /**
@@ -81,18 +162,9 @@ window.addEventListener('load', () => {
   // 準備 *遊戲盤面* 的繪圖圖紙 (canvas)
   let gameCanvas = document.createElement('canvas');
 
-  // 取得能在 canvas 上繪圖的 context2d 物件
-  let ctxPaint = gameCanvas.getContext('2d');
-
   // 設定繪圖圖紙的寬高
   gameCanvas.width = 640;
   gameCanvas.height = 480;
-
-  // 設定圖紙背景色
-  ctxPaint.fillStyle = 'mintcream';
-
-  // 繪出基本遊戲盤面
-  paint(ctxPaint);
 
   // 準備承載 *遊戲內容* 的 HTML 元素
   let gameContent = document.createElement('article');
@@ -127,6 +199,8 @@ window.addEventListener('load', () => {
     document.getElementById('cursor-x').textContent = e.clientX;
     document.getElementById('cursor-y').textContent = e.clientY;
   });
+
+  breakIt.start();
 });
 
 // index.js
