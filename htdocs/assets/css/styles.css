@@ -73,6 +73,23 @@ footer {
   border-bottom: 3px solid #aaaacc;
 }
 
+.card-footer {
+/*  background-color: #f3caac; */
+  background-color: #ffe3ac;
+  position: relative;
+  height: 2.5rem;
+  margin: 0.5rem 0.25rem 0.5rem 0.25rem;
+  padding: 0.25rem;
+}
+
+.ctrl-button {
+  background-color: #bfc7f7;
+  border-radius: 8px;
+  font-size: 1.25rem;
+  margin: 0.25rem 0.25rem;
+  padding: 0 1rem;
+}
+
 /*
  * 頁面的根 container
  */

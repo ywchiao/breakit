@@ -3,7 +3,7 @@
  *  @brief      The entry file of BreakIt.
  *  @author     Yiwei Chiao (ywchiao@gmail.com)
  *  @date       10/11/2018 created.
- *  @date       11/01/2018 last modified.
+ *  @date       11/08/2018 last modified.
  *  @version    0.1.0
  *  @since      0.1.0
  *  @copyright  MIT, © 2018 Yiwei Chiao
@@ -12,57 +12,6 @@
  *  The entry file of BreakIt.
  */
 'use strict';
-
-// 繪出 *擊球板* (paddle)
-let paintPaddle = function (ctx) {
-  ctx.save();
-
-  ctx.fillStyle = 'midnightblue';
-  ctx.fillRect(272, 454, 96, 16);
-
-  ctx.restore();
-};
-
-// 繪出 *磚塊* (paddle)
-let paintBricks = function (ctx) {
-  ctx.save();
-
-  let width = 8;
-  let height = 5;
-
-  for (let x = 0; x < width; x ++) {
-    for (let y = 0; y < height; y++) {
-      ctx.fillStyle =
-        `rgb(${Math.floor(255 - 42.5 * x)}, ${Math.floor(255 - 42.5 * y)}, 0)`;
-
-      ctx.fillRect((x * 80) + 8, (y * 24) + 10, 64, 16);
-    }
-  }
-
-  ctx.restore();
-};
-
-// 重繪 *遊戲盤面*
-let paint = function () {
-  // 取得能在 canvas 上繪圖的 context2d 物件
-  let ctx = document.querySelector('canvas').getContext('2d');
-
-  // 將圖紙填滿背景色
-  ctx.fillStyle = 'mintcream';
-  ctx.fillRect(0, 0, 640, 480);
-
-  ctx.strokeStyle = 'slateblue';
-  ctx.strokeRect(4, 4, 632, 472);
-
-  // 繪出磚塊
-  paintBricks(ctx);
- 
-  // 繪出擊球板
-  paintPaddle(ctx);
-
-  // 繪球
-  ball.paint(ctx);
-};
 
 let ball = {
   _elapsed: 0,
@@ -109,24 +58,163 @@ let ball = {
   }
 };
 
+class Brick {
+  constructor (x, y, color) {
+    this._x = x;
+    this._y = y;
+
+    this._width = 64;
+    this._height = 16;
+
+    this._color = color;
+  }
+
+  get x() {
+    return this._x;
+  }
+
+  get y() {
+    return this._y;
+  }
+
+  get width() {
+    return this._width;
+  }
+
+  get height() {
+    return this._height;
+  }
+
+  paint (ctx) {
+    ctx.save();
+
+    ctx.fillStyle = this._color;
+    ctx.fillRect(this._x, this._y, this._width, this._height);
+
+    ctx.restore();
+  }
+};
+
+class Paddle {
+  constructor (x, y) {
+    this._x = x;
+    this._y = y;
+
+    this._width = 96;
+    this._height = 16;
+  }
+
+  get x() {
+    return this._x;
+  }
+
+  get y() {
+    return this._y;
+  }
+
+  get width() {
+    return this._width;
+  }
+
+  get height() {
+    return this._height;
+  }
+
+  move (offset) {
+    this._x += offset;
+  }
+
+  paint (ctx) {
+    ctx.save();
+
+    ctx.fillStyle = 'midnightblue';
+    ctx.fillRect(this._x, this._y, this._width, this._height);
+
+    ctx.restore();
+  } 
+};
+
 let breakIt = {
+  _lastUpdate: null,
+
+  _paused: false,
+
+  _bricks: [],
+  
+  _paddle: null,
+
   _loop: function (ticks) {
     if (!this._startAt) {
       this._startAt = ticks;
     };
 
     this.update(ticks);
-    paint();
+    this.paint();
 
-    requestAnimationFrame(this._loop.bind(this));
+    if (!this._paused) {
+      this._tickHandler = requestAnimationFrame(this._loop.bind(this));
+    }
+  },
+
+  movePaddle: function (offset) {
+    if (!this._paused) {
+      this._paddle.move(offset);
+    };
+  },
+
+  paint: function () {
+    // 取得能在 canvas 上繪圖的 context2d 物件
+    let ctx = document.querySelector('canvas').getContext('2d');
+
+    // 將圖紙填滿背景色
+    ctx.fillStyle = 'mintcream';
+    ctx.fillRect(0, 0, 640, 480);
+
+    ctx.strokeStyle = 'slateblue';
+    ctx.strokeRect(4, 4, 632, 472);
+
+    // 繪出磚塊
+    this._bricks.forEach(brick => {
+      brick.paint(ctx);
+    });
+   
+    // 繪出擊球板
+    this._paddle.paint(ctx);
+
+    // 繪球
+    ball.paint(ctx);
   },
 
   pause: function () {
+    this._paused = true;
+
     cancelAnimationFrame(this._tickHandler);
   },
 
+  reset: function () {
+    let width = 8;
+    let height = 5;
+
+    for (let x = 0; x < width; x ++) {
+      for (let y = 0; y < height; y++) {
+        this._bricks.push(new Brick(
+          (x * 80) + 8,
+          (y * 24) + 10,
+          `rgb(${Math.floor(255 - 42.5 * x)}, ${Math.floor(255 - 42.5 * y)}, 0)`
+        ));
+      }
+    }
+
+    this._paddle = new Paddle(272, 454);
+
+    this.paint();
+  },
+
   start: function () {
-    this._tickHandler = requestAnimationFrame(this._loop.bind(this));
+    this._paused = false;
+    this._lastUpdate = null;
+
+    this._tickhandler = requestAnimationFrame(this._loop.bind(this));
   },
 
   update: function (ticks) {
@@ -136,6 +224,42 @@ let breakIt = {
 
     this._lastUpdate = ticks;
   }
+};
+
+const gameFooter = () => {
+  let footer = document.createElement('footer');
+  footer.className = 'card-footer';
+
+  const captions = ['開始', '暫停', '結束'];
+
+  captions.forEach((text, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'ctrl-button';
+
+    btn.textContent = text;
+    btn.value = idx;
+
+    switch (idx) {
+      case 0:
+        btn.addEventListener('click', e => {
+          breakIt.start();
+        });
+
+        break;
+
+      case 1:
+      case 2:
+        btn.addEventListener('click', e => {
+          breakIt.pause();
+        });
+
+        break;
+    }
+
+    footer.appendChild(btn);
+  });
+
+  return footer;
 };
 
 /**
@@ -183,6 +307,8 @@ window.addEventListener('load', () => {
   // 將 *遊戲內容* 放上 *遊戲桌面*
   gameDesktop.appendChild(gameContent);
 
+  gameDesktop.appendChild(gameFooter());
+
   // 將 *遊戲桌面* 放上 *網頁*
   let desktop = document.querySelector('.site-body')
   desktop.appendChild(gameDesktop);
@@ -200,7 +326,22 @@ window.addEventListener('load', () => {
     document.getElementById('cursor-y').textContent = e.clientY;
   });
 
-  breakIt.start();
+  desktop.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case 'ArrowLeft':
+        breakIt.movePaddle(-4);
+        break;
+
+      case 'ArrowRight':
+        breakIt.movePaddle(4);
+        break;
+
+      default:
+        console.log(`wrong key.`);
+    };
+  });
+
+  breakIt.reset();
 });
 
 // index.js

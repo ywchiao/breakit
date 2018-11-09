@@ -55,7 +55,7 @@
 13. requestAnimationFrame(loop);
 ```
 
-  將上面的程式碼存放在 `htdosc/js/test.js` 檔案內，再將
+  將上面的程式碼存放在 `htdocs/js/test.js` 檔案內，再將
   `htdocs/index.html` 裡的
 
 ```HTML
@@ -133,7 +133,7 @@
  5.     };
  6.
  7.     this.update(ticks);
- 8. i   paint();
+ 8.     paint();
  9.
 10.     requestAnimationFrame(this._loop.bind(this));
 11.   },

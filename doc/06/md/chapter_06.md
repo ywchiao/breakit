@@ -1,6 +1,6 @@
 <!---
   @file       chapter_06.md
-  @date       11/02/2018 created.
+  @date       11/09/2018 created.
   @copyright  CC-BY, (C) 2017 Yiwei Chiao
   @detail
     This file is machine-generated. DONOT MODIFY IT DIRECTLY.
@@ -228,7 +228,7 @@
 13. requestAnimationFrame(loop);
 ```
 
-  將上面的程式碼存放在 `htdosc/js/test.js` 檔案內，再將
+  將上面的程式碼存放在 `htdocs/js/test.js` 檔案內，再將
   `htdocs/index.html` 裡的
 
 ```HTML
@@ -306,7 +306,7 @@
  5.     };
  6.
  7.     this.update(ticks);
- 8. i   paint();
+ 8.     paint();
  9.
 10.     requestAnimationFrame(this._loop.bind(this));
 11.   },
