@@ -3,7 +3,7 @@
  *  @brief      The entry file of BreakIt.
  *  @author     Yiwei Chiao (ywchiao@gmail.com)
  *  @date       10/11/2018 created.
- *  @date       11/08/2018 last modified.
+ *  @date       11/16/2018 last modified.
  *  @version    0.1.0
  *  @since      0.1.0
  *  @copyright  MIT, © 2018 Yiwei Chiao
@@ -13,47 +13,151 @@
  */
 'use strict';
 
-let ball = {
-  _elapsed: 0,
+const DELTA_TIME = (1 / 60) * 1000;
+const OFFSET = 2;
 
-  x: 320,
+const LINE = {
+  intersection: (x1, len1, x2, len2) => {
+    return Math.min(x1 + len1, x2 + len2) - Math.max(x1, x2);
+  }
+};
 
-  y: 240,
+class Rect {
+  constructor(x = 0, y = 0, width = 1, height = 1) {
+    this._x = x;
+    this._y = y;
 
-  offX: -2,
+    this._width = width;
+    this._height = height;
+  }
 
-  offY: 2,
+  get x() {
+    return this._x;
+  }
 
-  paint: function (ctx) {
+  get y() {
+    return this._y;
+  }
+
+  get width() {
+    return this._width;
+  }
+
+  get height() {
+    return this._height;
+  }
+
+  contain(rect) {
+  }
+
+  relocate(x, y) {
+    this._x = x;
+    this._y = y;
+  }
+};
+
+class Ball {
+  constructor(x, y, radius = 6) {
+    this._x = x;
+    this._y = y;
+
+    this._radius = radius;
+    this._diameter = 2 * radius;
+
+    this._offX = -OFFSET;
+    this._offY = OFFSET;
+
+    this._elapsed = 0;
+  }
+
+  get x() {
+    return this._x;
+  }
+
+  get y() {
+    return this._y;
+  }
+
+  get r() {
+    return this._radius;
+  }
+
+  get diameter() {
+    return this._diameter;
+  }
+
+  get width() {
+    return this._diameter;
+  }
+
+  get height() {
+    return this._diameter;
+  }
+
+  collideWith(rect) {
+    return (
+      LINE.intersection(this.x, this.width, rect.x, rect.width) > 0 &&
+      LINE.intersection(this.y, this.height, rect.y, rect.height) > 0
+    );
+  }
+
+  paint(ctx) {
     ctx.save();
 
     ctx.fillStyle = 'red';
 
     ctx.beginPath();
-    ctx.arc(this.x, this.y, 6, 0, 2 * Math.PI, true);
+    ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, true);
     ctx.closePath();
 
     ctx.fill();
 
     ctx.restore();
-  },
+  }
 
-  update: function (drifts) {
+  revertX() {
+    this._offX = -this._offX;
+  }
+
+  revertY() {
+    this._offY = -this._offY;
+  }
+
+  turnEast() {
+    this._offX = OFFSET;
+  }
+
+  turnWest() {
+    this._offX = -OFFSET;
+  }
+
+  turnNorth() {
+    this._offY = -OFFSET;
+  }
+
+  turnSouth() {
+    this._offY = OFFSET;
+  }
+
+  update(drifts) {
     this._elapsed += drifts;
    
-    while (this._elapsed > 16) {
-      this.x += this.offX;
-      this.y += this.offY;
-
-      if (this.x < 20 || this.x > 620) {
-        this.offX = - this.offX;
+    while (this._elapsed > DELTA_TIME ) { // 1 / 60 ~= 16.66
+      // 檢查球是否擊中 `遊戲視窗` `左右` 邊界
+      if (this._x < this.diameter || this._x > (640 - this.diameter)) {
+        this._offX = -this._offX;
       }
 
-      if (this.y < 20 || this.y > 460) {
-        this.offY = - this.offY;
+      // 檢查球是否擊中 `遊戲視窗` `上下` 邊界
+      if (this._y < (2 * this.diameter) || this._y > (480 - this.diameter)) {
+        this._offY = -this._offY;
       }
 
-      this._elapsed -= 16;
+      // 移動球。
+      this._x += this._offX;
+      this._y += this._offY;
+
+      this._elapsed -= DELTA_TIME;
     }
   }
 };
@@ -65,6 +169,13 @@ class Brick {
 
     this._width = 64;
     this._height = 16;
+
+    this._border = [
+      new Rect(this._x, this._y, this._width, 1),
+      new Rect(this._x, this._y, 1, this._height),
+      new Rect(this._x, this._y + this._height, this._width, 1),
+      new Rect(this._x + this._width, this._y, 1, this._height),
+    ];
 
     this._color = color;
   }
@@ -85,6 +196,22 @@ class Brick {
     return this._height;
   }
 
+  get borderNorth() {
+    return this._border[0]
+  }
+
+  get borderWest() {
+    return this._border[1]
+  }
+
+  get borderSouth() {
+    return this._border[2]
+  }
+
+  get borderEast() {
+    return this._border[3]
+  }
+
   paint (ctx) {
     ctx.save();
 
@@ -102,6 +229,13 @@ class Paddle {
 
     this._width = 96;
     this._height = 16;
+
+    this._border = [
+      new Rect(this._x, this._y, this._width, 1),
+      new Rect(this._x, this._y, 1, this._height),
+      new Rect(this._x, this._y + this._height, this._width, 1),
+      new Rect(this._x + this._width, this._y, 1, this._height),
+    ];
   }
 
   get x() {
@@ -120,8 +254,28 @@ class Paddle {
     return this._height;
   }
 
+  get borderNorth() {
+    return this._border[0]
+  }
+
+  get borderWest() {
+    return this._border[1]
+  }
+
+  get borderSouth() {
+    return this._border[2]
+  }
+
+  get borderEast() {
+    return this._border[3]
+  }
+
   move (offset) {
     this._x += offset;
+
+    this._border.forEach(border => {
+      border.relocate(border.x + offset, border.y);
+    });
   }
 
   paint (ctx) {
@@ -134,16 +288,25 @@ class Paddle {
   } 
 };
 
-let breakIt = {
-  _lastUpdate: null,
+class BreakIt {
+  constructor () {
+    this._bricks = [];
+    this._score = 0;
+  }
 
-  _paused: false,
+  get bricks() {
+    return this._bricks;
+  }
 
-  _bricks: [],
-  
-  _paddle: null,
+  get paddle() {
+    return this._paddle;
+  }
 
-  _loop: function (ticks) {
+  get paused() {
+    return (this._lastUpdate == null);
+  }
+
+  _loop(ticks) {
     if (!this._startAt) {
       this._startAt = ticks;
     };
@@ -151,18 +314,18 @@ let breakIt = {
     this.update(ticks);
     this.paint();
 
-    if (!this._paused) {
+    if (!this.paused) {
       this._tickHandler = requestAnimationFrame(this._loop.bind(this));
     }
-  },
+  }
 
-  movePaddle: function (offset) {
-    if (!this._paused) {
+  movePaddle(offset) {
+    if (!this.paused) {
       this._paddle.move(offset);
     };
-  },
+  }
 
-  paint: function () {
+  paint() {
     // 取得能在 canvas 上繪圖的 context2d 物件
     let ctx = document.querySelector('canvas').getContext('2d');
 
@@ -182,16 +345,16 @@ let breakIt = {
     this._paddle.paint(ctx);
 
     // 繪球
-    ball.paint(ctx);
-  },
+    this._ball.paint(ctx);
+  }
 
-  pause: function () {
-    this._paused = true;
+  pause() {
+    this._lastUpdate = null;
 
     cancelAnimationFrame(this._tickHandler);
-  },
+  }
 
-  reset: function () {
+  reset() {
     let width = 8;
     let height = 5;
 
@@ -205,28 +368,87 @@ let breakIt = {
       }
     }
 
+    this._ball = new Ball(320, 240);
     this._paddle = new Paddle(272, 454);
 
     this.paint();
-  },
+  }
 
-  start: function () {
-    this._paused = false;
-    this._lastUpdate = null;
-
+  start() {
     this._tickhandler = requestAnimationFrame(this._loop.bind(this));
-  },
+  }
 
-  update: function (ticks) {
+  update(ticks) {
     if (this._lastUpdate) {
-      ball.update(ticks - this._lastUpdate);
+      this._ball.update(ticks - this._lastUpdate);
+
+      // 檢查是否有擊中 `擊球板ˋ
+      if (this._ball.collideWith(this._paddle)) {
+        // 如果撞到 `擊球板` 的 `左右` 兩側，
+        // 改變 `x` 軸的移動方向。
+        if (this._ball.collideWith(this._paddle.borderEast)) {
+          this._ball.turnEast();
+        }
+
+        if (this._ball.collideWith(this._paddle.borderWest)) {
+          this._ball.turnWest();
+        }
+
+        // 如果撞到 `擊球板` 的 `上下` 兩側，
+        // 改變 `y` 軸的移到方向。
+        if (this._ball.collideWith(this._paddle.borderNorth)) {
+          this._ball.turnNorth();
+        }
+
+        if (this._ball.collideWith(this._paddle.borderSouth)) {
+          this._ball.turnSouth();
+        }
+      } 
+
+      // 對所有的磚塊，進行 `碰撞檢查`
+      for (let i = 0; i < this._bricks.length; i++) {
+        let brick = this._bricks[i];
+
+        // 檢查是否有擊中 `磚塊`
+        if (this._ball.collideWith(brick)) {
+          // `磚塊` 被擊中，將磚塊 `移除`
+          this._bricks.splice(i, 1);
+
+          // 增加分數
+          this._score += 20;
+
+          // 如果撞到 `磚塊` 的 `左右` 兩側，
+          // 改變 `x` 軸的移動方向。
+          if (
+            this._ball.collideWith(brick.borderEast) ||
+            this._ball.collideWith(brick.borderWest)
+          ) {
+            this._ball.revertX();
+          } 
+          
+          // 如果撞到 `磚塊` 的 `上下` 兩側，
+          // 改變 `y` 軸的移到方向。
+          if (
+            this._ball.collideWith(brick.borderNorth) ||
+            this._ball.collideWith(brick.borderSouth)
+          ) {
+            this._ball.revertY();
+          }
+
+          break;
+        }
+      }
     };
+
+    console.log(`current score: ${this._score}`);
+
+    document.getElementById('brick-count').textContent = this._bricks.length;
 
     this._lastUpdate = ticks;
   }
 };
 
-const gameFooter = () => {
+const gameFooter = (breakIt) => {
   let footer = document.createElement('footer');
   footer.className = 'card-footer';
 
@@ -272,9 +494,33 @@ const gameFooter = () => {
 window.addEventListener('load', () => {
   console.log("breakit.js loaded");
 
+  let breakIt = new BreakIt();
+
   // 準備承載 *遊戲標題* (title) 的 HTML 元素
   let gameTitle = document.createElement('span');
   gameTitle.textContent = 'BreakIt!';
+
+  // 準備承載 *磚塊個數* 的 HTML 元素
+  let brickPane = document.createElement('span');
+  brickPane.className = 'float-right';
+  brickPane.textContent = '磚塊: ';
+
+  let brickCount = document.createElement('span');
+  brickCount.textContent = '20';
+  brickCount.id = 'brick-count';
+
+  brickPane.appendChild(brickCount);
+
+  // 準備承載 *遊戲得分* 的 HTML 元素
+  let scorePane = document.createElement('span');
+  scorePane.className = 'float-right';
+  scorePane.textContent = '目前得分： '
+
+  let gameScore = document.createElement('span');
+  gameScore.textContent = '200';
+  gameScore.id = 'score';
+
+  scorePane.appendChild(gameScore);
 
   // 準備承載 *遊戲版頭* (header) 的 HTML 元素
   let gameHeader = document.createElement('header');
@@ -282,6 +528,12 @@ window.addEventListener('load', () => {
 
   // 將 *遊戲標題* 放上 *遊戲版頭*
   gameHeader.appendChild(gameTitle);
+
+  // 將 *磚塊計數* 放上 *遊戲版頭*
+  gameHeader.appendChild(brickPane);
+
+  // 將 *遊戲得分* 放上 *遊戲版頭*
+  gameHeader.appendChild(scorePane);
 
   // 準備 *遊戲盤面* 的繪圖圖紙 (canvas)
   let gameCanvas = document.createElement('canvas');
@@ -307,7 +559,7 @@ window.addEventListener('load', () => {
   // 將 *遊戲內容* 放上 *遊戲桌面*
   gameDesktop.appendChild(gameContent);
 
-  gameDesktop.appendChild(gameFooter());
+  gameDesktop.appendChild(gameFooter(breakIt));
 
   // 將 *遊戲桌面* 放上 *網頁*
   let desktop = document.querySelector('.site-body')
