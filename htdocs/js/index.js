@@ -3,7 +3,7 @@
  *  @brief      The entry file of BreakIt.
  *  @author     Yiwei Chiao (ywchiao@gmail.com)
  *  @date       10/11/2018 created.
- *  @date       11/16/2018 last modified.
+ *  @date       11/23/2018 last modified.
  *  @version    0.1.0
  *  @since      0.1.0
  *  @copyright  MIT, © 2018 Yiwei Chiao
@@ -15,6 +15,13 @@
 
 const DELTA_TIME = (1 / 60) * 1000;
 const OFFSET = 2;
+const STATE = {
+  GAMING: 0,
+
+  LEVEL_CLEAR: 1,
+
+  GAME_OVER: 2
+}
 
 const LINE = {
   intersection: (x1, len1, x2, len2) => {
@@ -31,23 +38,20 @@ class Rect {
     this._height = height;
   }
 
-  get x() {
+  get x () {
     return this._x;
   }
 
-  get y() {
+  get y () {
     return this._y;
   }
 
-  get width() {
+  get width () {
     return this._width;
   }
 
-  get height() {
+  get height () {
     return this._height;
-  }
-
-  contain(rect) {
   }
 
   relocate(x, y) {
@@ -66,31 +70,29 @@ class Ball {
 
     this._offX = -OFFSET;
     this._offY = OFFSET;
-
-    this._elapsed = 0;
   }
 
-  get x() {
+  get x () {
     return this._x;
   }
 
-  get y() {
+  get y () {
     return this._y;
   }
 
-  get r() {
+  get r () {
     return this._radius;
   }
 
-  get diameter() {
+  get diameter () {
     return this._diameter;
   }
 
-  get width() {
+  get width () {
     return this._diameter;
   }
 
-  get height() {
+  get height () {
     return this._diameter;
   }
 
@@ -115,50 +117,37 @@ class Ball {
     ctx.restore();
   }
 
-  revertX() {
-    this._offX = -this._offX;
+  relocate(x, y) {
+    this._x = x;
+    this._y = y;
   }
 
-  revertY() {
-    this._offY = -this._offY;
+  revertX () {
+    this._offX = - this._offX;
   }
 
-  turnEast() {
+  revertY () {
+    this._offY = - this._offY;
+  }
+
+  turnEast () {
     this._offX = OFFSET;
   }
 
-  turnWest() {
+  turnWest () {
     this._offX = -OFFSET;
   }
 
-  turnNorth() {
+  turnNorth () {
     this._offY = -OFFSET;
   }
 
-  turnSouth() {
+  turnSouth () {
     this._offY = OFFSET;
   }
 
   update(drifts) {
-    this._elapsed += drifts;
-   
-    while (this._elapsed > DELTA_TIME ) { // 1 / 60 ~= 16.66
-      // 檢查球是否擊中 `遊戲視窗` `左右` 邊界
-      if (this._x < this.diameter || this._x > (640 - this.diameter)) {
-        this._offX = -this._offX;
-      }
-
-      // 檢查球是否擊中 `遊戲視窗` `上下` 邊界
-      if (this._y < (2 * this.diameter) || this._y > (480 - this.diameter)) {
-        this._offY = -this._offY;
-      }
-
-      // 移動球。
-      this._x += this._offX;
-      this._y += this._offY;
-
-      this._elapsed -= DELTA_TIME;
-    }
+    this.relocate(this.x + this._offX, this.y + this._offY);
   }
 };
 
@@ -180,35 +169,35 @@ class Brick {
     this._color = color;
   }
 
-  get x() {
+  get x () {
     return this._x;
   }
 
-  get y() {
+  get y () {
     return this._y;
   }
 
-  get width() {
+  get width () {
     return this._width;
   }
 
-  get height() {
+  get height () {
     return this._height;
   }
 
-  get borderNorth() {
+  get borderNorth () {
     return this._border[0]
   }
 
-  get borderWest() {
+  get borderWest () {
     return this._border[1]
   }
 
-  get borderSouth() {
+  get borderSouth () {
     return this._border[2]
   }
 
-  get borderEast() {
+  get borderEast () {
     return this._border[3]
   }
 
@@ -238,44 +227,40 @@ class Paddle {
     ];
   }
 
-  get x() {
+  get x () {
     return this._x;
   }
 
-  get y() {
+  get y () {
     return this._y;
   }
 
-  get width() {
+  get width () {
     return this._width;
   }
 
-  get height() {
+  get height () {
     return this._height;
   }
 
-  get borderNorth() {
+  get borderNorth () {
     return this._border[0]
   }
 
-  get borderWest() {
+  get borderWest () {
     return this._border[1]
   }
 
-  get borderSouth() {
+  get borderSouth () {
     return this._border[2]
   }
 
-  get borderEast() {
+  get borderEast () {
     return this._border[3]
   }
 
   move (offset) {
-    this._x += offset;
-
-    this._border.forEach(border => {
-      border.relocate(border.x + offset, border.y);
-    });
+    this.relocate(this.x + offset, this.y);
   }
 
   paint (ctx) {
@@ -286,48 +271,180 @@ class Paddle {
 
     ctx.restore();
   } 
+
+  relocate (x, y) {
+    this._x = x;
+    this._y = y;
+
+    this._border[0].relocate(this._x, this._y);
+    this._border[1].relocate(this._x, this._y);
+    this._border[2].relocate(this._x, this._y + this._height);
+    this._border[3].relocate(this._x + this._width, this._y);
+  }
+};
+
+class Window {
+  constructor (width, height) {
+    this._x = 0;
+    this._y = 0;
+
+    this._width = width;
+    this._height = height;
+
+    this._border = [
+      new Rect(this._x, this._y, this._width, 12),
+      new Rect(this._x, this._y, 12, this._height),
+      new Rect(this._x, this._y + this._height, this._width, 12),
+      new Rect(this._x + this._width, this._y, 12, this._height),
+    ];
+  }
+
+  get x () {
+    return this._x;
+  }
+
+  get y () {
+    return this._y;
+  }
+
+  get width () {
+    return this._width;
+  }
+
+  get height () {
+    return this._height;
+  }
+
+  get borderNorth () {
+    return this._border[0]
+  }
+
+  get borderWest () {
+    return this._border[1]
+  }
+
+  get borderSouth () {
+    return this._border[2]
+  }
+
+  get borderEast () {
+    return this._border[3]
+  }
 };
 
 class BreakIt {
   constructor () {
+    this._width = 8;
+    this._height = 5;
+
     this._bricks = [];
+
+    for (let x = 0; x < this._width; x ++) {
+      for (let y = 0; y < this._height; y++) {
+        this._bricks.push(new Brick(
+          (x * 80) + 8,
+          (y * 24) + 10,
+          `rgb(${Math.floor(255 - 42.5 * x)}, ${Math.floor(255 - 42.5 * y)}, 0)`
+        ));
+      }
+    }
+
+    this._ball = new Ball(320, 240);
+    this._paddle = new Paddle(272, 454);
+
     this._score = 0;
+    this._life = 3;
+    this._gameState = STATE.GAMING;
+
+    this._window = new Window(640, 480);
   }
 
-  get bricks() {
+  get bricks () {
     return this._bricks;
   }
 
-  get paddle() {
+  get paddle () {
     return this._paddle;
   }
 
-  get paused() {
+  get paused () {
     return (this._lastUpdate == null);
   }
 
-  _loop(ticks) {
+  set context (ctx) {
+    this._ctx = ctx;
+  }
+
+  gameOver () {
+    let ctx = this._ctx;
+
+    ctx.save();
+    
+    ctx.font = '64px serif';
+    ctx.fillStyle = 'red';
+    ctx.fillText('G.a.m.e. O.v.e.r.!', 112, 200);
+
+    ctx.restore();
+
+    this._gameState = STATE.GAME_OVER;
+  }
+
+  _loop (ticks) {
     if (!this._startAt) {
       this._startAt = ticks;
     };
 
     this.update(ticks);
+
     this.paint();
+
+    if (this._gameState == STATE.LOST_LIFE) {
+      this._gameState = STATE.GAMING;
+
+      this._life --;
+
+      if (this._life == 0) {
+        this.gameOver();
+
+        this.pause();
+      }
+      else {
+        this.reset();
+      }
+    }
+    else if (this._gameState == STATE.LEVEL_CLEAR) {
+      this.newLevel();
+
+      this.reset();
+    }
+
+    this.status();
 
     if (!this.paused) {
       this._tickHandler = requestAnimationFrame(this._loop.bind(this));
     }
   }
 
-  movePaddle(offset) {
+  movePaddle (offset) {
     if (!this.paused) {
       this._paddle.move(offset);
     };
   }
 
-  paint() {
-    // 取得能在 canvas 上繪圖的 context2d 物件
-    let ctx = document.querySelector('canvas').getContext('2d');
+  newLevel () {
+    for (let x = 0; x < this._width; x ++) {
+      for (let y = 0; y < this._height; y++) {
+        this._bricks.push(new Brick(
+          (x * 80) + 8,
+          (y * 24) + 10,
+          `rgb(${Math.floor(255 - 42.5 * x)}, ${Math.floor(255 - 42.5 * y)}, 0)`
+        ));
+      }
+    }
+  }
+
+  paint () {
+    let ctx = this._ctx;
 
     // 將圖紙填滿背景色
     ctx.fillStyle = 'mintcream';
@@ -348,101 +465,131 @@ class BreakIt {
     this._ball.paint(ctx);
   }
 
-  pause() {
+  pause () {
     this._lastUpdate = null;
 
     cancelAnimationFrame(this._tickHandler);
   }
 
-  reset() {
-    let width = 8;
-    let height = 5;
-
-    for (let x = 0; x < width; x ++) {
-      for (let y = 0; y < height; y++) {
-        this._bricks.push(new Brick(
-          (x * 80) + 8,
-          (y * 24) + 10,
-          `rgb(${Math.floor(255 - 42.5 * x)}, ${Math.floor(255 - 42.5 * y)}, 0)`
-        ));
-      }
-    }
+  reset () {
+    this._elapsed = 0;
 
     this._ball = new Ball(320, 240);
     this._paddle = new Paddle(272, 454);
 
+    this._gameState = STATE.GAMING;
+
     this.paint();
+
+    this.pause();
   }
 
-  start() {
+  start () {
     this._tickhandler = requestAnimationFrame(this._loop.bind(this));
   }
 
+  status () {
+    document.getElementById('score').textContent = this._score;
+    document.getElementById('ball-count').textContent = this._life;
+    document.getElementById('brick-count').textContent = this._bricks.length;
+  }
+
   update(ticks) {
+    let lostLife = false;
+
     if (this._lastUpdate) {
-      this._ball.update(ticks - this._lastUpdate);
+      this._elapsed += (ticks - this._lastUpdate);
 
-      // 檢查是否有擊中 `擊球板ˋ
-      if (this._ball.collideWith(this._paddle)) {
-        // 如果撞到 `擊球板` 的 `左右` 兩側，
-        // 改變 `x` 軸的移動方向。
-        if (this._ball.collideWith(this._paddle.borderEast)) {
-          this._ball.turnEast();
-        }
+      while (this._elapsed > DELTA_TIME ) { // 1 / 60 ~= 16.66
+        this._ball.update();
 
-        if (this._ball.collideWith(this._paddle.borderWest)) {
-          this._ball.turnWest();
-        }
-
-        // 如果撞到 `擊球板` 的 `上下` 兩側，
-        // 改變 `y` 軸的移到方向。
-        if (this._ball.collideWith(this._paddle.borderNorth)) {
-          this._ball.turnNorth();
-        }
-
-        if (this._ball.collideWith(this._paddle.borderSouth)) {
-          this._ball.turnSouth();
-        }
-      } 
-
-      // 對所有的磚塊，進行 `碰撞檢查`
-      for (let i = 0; i < this._bricks.length; i++) {
-        let brick = this._bricks[i];
-
-        // 檢查是否有擊中 `磚塊`
-        if (this._ball.collideWith(brick)) {
-          // `磚塊` 被擊中，將磚塊 `移除`
-          this._bricks.splice(i, 1);
-
-          // 增加分數
-          this._score += 20;
-
-          // 如果撞到 `磚塊` 的 `左右` 兩側，
-          // 改變 `x` 軸的移動方向。
-          if (
-            this._ball.collideWith(brick.borderEast) ||
-            this._ball.collideWith(brick.borderWest)
-          ) {
-            this._ball.revertX();
-          } 
-          
-          // 如果撞到 `磚塊` 的 `上下` 兩側，
-          // 改變 `y` 軸的移到方向。
-          if (
-            this._ball.collideWith(brick.borderNorth) ||
-            this._ball.collideWith(brick.borderSouth)
-          ) {
-            this._ball.revertY();
-          }
+        // 如果球擊中 `遊戲視窗` 的 `下` 邊界
+        if (this._ball.collideWith(this._window.borderSouth)) {
+          this._gameState = STATE.LOST_LIFE;
 
           break;
         }
+
+        // 如果球擊中 `遊戲視窗` 的 `上` 邊界
+        if (this._ball.collideWith(this._window.borderNorth)) {
+          this._ball.turnSouth();
+        }
+
+        // 如果球擊中 `遊戲視窗` 的 `左右` 邊界
+        // 改變 `x` 軸的移動方向。
+        if (this._ball.collideWith(this._window.borderEast)) {
+          this._ball.turnWest();
+        }
+
+        if (this._ball.collideWith(this._window.borderWest)) {
+          this._ball.turnEast();
+        }
+
+        // 檢查是否有擊中 `擊球板ˋ
+        if (this._ball.collideWith(this._paddle)) {
+          // 如果撞到 `擊球板` 的 `左右` 兩側，
+          // 改變 `x` 軸的移動方向。
+          if (this._ball.collideWith(this._paddle.borderEast)) {
+            this._ball.turnEast();
+          }
+
+          if (this._ball.collideWith(this._paddle.borderWest)) {
+            this._ball.turnWest();
+          }
+
+          // 如果撞到 `擊球板` 的 `上下` 兩側，
+          // 改變 `y` 軸的移到方向。
+          if (this._ball.collideWith(this._paddle.borderNorth)) {
+            this._ball.turnNorth();
+          }
+
+          if (this._ball.collideWith(this._paddle.borderSouth)) {
+            this._ball.turnSouth();
+          }
+        } 
+
+        // 對所有的磚塊，進行 `碰撞檢查`
+        for (let i = 0; i < this._bricks.length; i++) {
+          let brick = this._bricks[i];
+
+          // 檢查是否有擊中 `磚塊`
+          if (this._ball.collideWith(brick)) {
+            // `磚塊` 被擊中，將磚塊 `移除`
+            this._bricks.splice(i, 1);
+
+            // 增加分數
+            this._score += 20;
+
+            // 如果撞到 `磚塊` 的 `左右` 兩側，
+            // 改變 `x` 軸的移動方向。
+            if (
+              this._ball.collideWith(brick.borderEast) ||
+              this._ball.collideWith(brick.borderWest)
+            ) {
+              this._ball.revertX();
+            } 
+            
+            // 如果撞到 `磚塊` 的 `上下` 兩側，
+            // 改變 `y` 軸的移到方向。
+            if (
+              this._ball.collideWith(brick.borderNorth) ||
+              this._ball.collideWith(brick.borderSouth)
+            ) {
+              this._ball.revertY();
+            }
+
+            // 破關?
+            if (this._bricks.length == 0) {
+              this._gameState = STATE.LEVEL_CLEAR;
+            }
+
+            break;
+          }
+        }
+
+        this._elapsed -= DELTA_TIME;
       }
     };
-
-    console.log(`current score: ${this._score}`);
-
-    document.getElementById('brick-count').textContent = this._bricks.length;
 
     this._lastUpdate = ticks;
   }
@@ -470,9 +617,15 @@ const gameFooter = (breakIt) => {
         break;
 
       case 1:
-      case 2:
         btn.addEventListener('click', e => {
           breakIt.pause();
+        });
+
+        break;
+
+      case 2:
+        btn.addEventListener('click', e => {
+          breakIt.gameOver();
         });
 
         break;
@@ -500,6 +653,17 @@ window.addEventListener('load', () => {
   let gameTitle = document.createElement('span');
   gameTitle.textContent = 'BreakIt!';
 
+  // 準備承載 *球個數* 的 HTML 元素
+  let ballPane = document.createElement('span');
+  ballPane.className = 'float-right';
+  ballPane.textContent = '剩下球數： '
+
+  let ballCount = document.createElement('span');
+  ballCount.textContent = '3';
+  ballCount.id = 'ball-count';
+
+  ballPane.appendChild(ballCount);
+
   // 準備承載 *磚塊個數* 的 HTML 元素
   let brickPane = document.createElement('span');
   brickPane.className = 'float-right';
@@ -522,6 +686,16 @@ window.addEventListener('load', () => {
 
   scorePane.appendChild(gameScore);
 
+  // 準備承載 *遊戲時間* 的 HTML 元素
+  let timerPane = document.createElement('span');
+  timerPane.className = 'float-right';
+  timerPane.textContent = '時間： '
+
+  let timer = document.createElement('span');
+  timer.id = 'timer';
+
+  timerPane.appendChild(timer);
+
   // 準備承載 *遊戲版頭* (header) 的 HTML 元素
   let gameHeader = document.createElement('header');
   gameHeader.className = 'card-header';
@@ -529,11 +703,17 @@ window.addEventListener('load', () => {
   // 將 *遊戲標題* 放上 *遊戲版頭*
   gameHeader.appendChild(gameTitle);
 
+  // 將 *剩餘球數* 放上 *遊戲版頭*
+  gameHeader.appendChild(ballPane);
+
   // 將 *磚塊計數* 放上 *遊戲版頭*
   gameHeader.appendChild(brickPane);
 
   // 將 *遊戲得分* 放上 *遊戲版頭*
   gameHeader.appendChild(scorePane);
+
+  // 將 *遊戲得分* 放上 *遊戲版頭*
+  gameHeader.appendChild(timerPane);
 
   // 準備 *遊戲盤面* 的繪圖圖紙 (canvas)
   let gameCanvas = document.createElement('canvas');
@@ -581,17 +761,20 @@ window.addEventListener('load', () => {
   desktop.addEventListener('keydown', (e) => {
     switch (e.key) {
       case 'ArrowLeft':
-        breakIt.movePaddle(-4);
+        breakIt.movePaddle(-7);
         break;
 
       case 'ArrowRight':
-        breakIt.movePaddle(4);
+        breakIt.movePaddle(7);
         break;
 
       default:
         console.log(`wrong key.`);
     };
   });
+
+  // 取得並設定能在 canvas 上繪圖的 context2d 物件
+  breakIt.context = document.querySelector('canvas').getContext('2d');
 
   breakIt.reset();
 });

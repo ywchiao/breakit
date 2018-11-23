@@ -1,6 +1,6 @@
 <!---
   @file       chapter_appendix.md
-  @date       11/09/2018 created.
+  @date       11/23/2018 created.
   @copyright  CC-BY, (C) 2017 Yiwei Chiao
   @detail
     This file is machine-generated. DONOT MODIFY IT DIRECTLY.
@@ -269,7 +269,7 @@
 [ECMAScript]: https://www.ecma-international.org/publications/standards/Ecma-262.htm
 [breakit]: https://github.com/ywchiao/breakit.git
 [breakout]: https://en.wikipedia.org/wiki/Breakout_(video_game)
-[nodejs]: https://nodejs.org
+[nodejs]: https://nodejs.org/en
 [atom]: https://atom.io
 [babeljs]: https://babeljs.io
 [browserify]: http://browserify.org
@@ -329,6 +329,29 @@
 [wikiTemplatEngine]: https://en.wikipedia.org/wiki/Template_processor
 [mdnCanvas2D]: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
 [mdnWebGL]: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API
+[amd]: http://requirejs.org/docs/whyamd.html
+[arrowfunction]: https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+[clientrequest]: https://nodejs.org/api/http.html#http_class_http_clientrequest
+[closure]: https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Closures
+[commonjs]: http://www.commonjs.org
+[console]: https://nodejs.org/api/console.html#console_class_console
+[createserver]: https://nodejs.org/api/http.html#http_http_createserver_requestlistener
+[http]: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
+[httpmod]: https://nodejs.org/api/http.html#http_http
+[httpserver]: https://nodejs.org/api/http.html#http_class_http_server
+[iife]: https://en.wikipedia.org/wiki/Immediately-invoked_function_expression
+[JavaScript]: https://developer.mozilla.org/zh-TW/docs/Web/JavaScript
+[let]: https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Statements/let
+[mdn]: https://developer.mozilla.org/zh-TW
+[mime]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
+[require]: https://nodejs.org/api/modules.html#modules_require
+[responseend]: https://nodejs.org/api/http.html#http_response_end_data_encoding_callback
+[responsewrite]: https://nodejs.org/api/http.html#http_response_write_chunk_encoding_callback
+[responsewritehead]: https://nodejs.org/api/http.html#http_response_writehead_statuscode_statusmessage_headers
+[serverlisten]: https://nodejs.org/api/http.html#http_server_listen_port_hostname_backlog_callback
+[serverresponse]: https://nodejs.org/api/http.html#http_class_http_serverresponse
+[strict]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode
+[var]: https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Statements/var
 [Unicode]: https://zh.wikipedia.org/wiki/Unicode
 [utf8]: https://zh.wikipedia.org/wiki/UTF-8
 [sokobanjs]: https://github.com/ywchiao/sokoban.js.git
