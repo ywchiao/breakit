@@ -1,6 +1,6 @@
 <!---
   @file       chapter_07.md
-  @date       11/23/2018 created.
+  @date       11/30/2018 created.
   @copyright  CC-BY, (C) 2017 Yiwei Chiao
   @detail
     This file is machine-generated. DONOT MODIFY IT DIRECTLY.

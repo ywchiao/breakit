@@ -1,6 +1,6 @@
 <!---
   @file       chapter_appendix.md
-  @date       11/23/2018 created.
+  @date       11/30/2018 created.
   @copyright  CC-BY, (C) 2017 Yiwei Chiao
   @detail
     This file is machine-generated. DONOT MODIFY IT DIRECTLY.
@@ -269,7 +269,7 @@
 [ECMAScript]: https://www.ecma-international.org/publications/standards/Ecma-262.htm
 [breakit]: https://github.com/ywchiao/breakit.git
 [breakout]: https://en.wikipedia.org/wiki/Breakout_(video_game)
-[nodejs]: https://nodejs.org/en
+[nodejs]: https://nodejs.org
 [atom]: https://atom.io
 [babeljs]: https://babeljs.io
 [browserify]: http://browserify.org
@@ -300,7 +300,7 @@
 [shellScript]: https://en.wikipedia.org/wiki/Shell_script
 [mdnCSS]: https://developer.mozilla.org/en-US/docs/Web/CSS
 [mdnHTML]: https://developer.mozilla.org/en-US/docs/Web/HTML
-[mdnJavaScript]: https://developer.mozilla.org/zh-TW/docs/Web/JavaScript
+[mdnJavaScript]: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 [wikiCSS]: https://en.wikipedia.org/wiki/Cascading_Style_Sheets
 [wikiECMAScript]: https://en.wikipedia.org/wiki/ECMAScript
 [wikiHTML]: https://en.wikipedia.org/wiki/HTML
@@ -352,6 +352,11 @@
 [serverresponse]: https://nodejs.org/api/http.html#http_class_http_serverresponse
 [strict]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode
 [var]: https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Statements/var
+[API]: https://en.wikipedia.org/wiki/Application_programming_interface
+[fs]: https://nodejs.org/api/fs.html#fs_file_system
+[readfile]: https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback
+[readfilesync]: https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
+[http_inmsg]: https://nodejs.org/api/http.html#http_class_http_incomingmessage
 [Unicode]: https://zh.wikipedia.org/wiki/Unicode
 [utf8]: https://zh.wikipedia.org/wiki/UTF-8
 [sokobanjs]: https://github.com/ywchiao/sokoban.js.git
