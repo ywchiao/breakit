@@ -49,7 +49,43 @@ http.createServer((request, response) => {
         });
 
         break;
-     
+
+      case '/assets/css/styles.css':
+        fs.readFile('../htdocs/assets/css/styles.css', (err, data) => {
+          if (err) {
+            console.log(' 檔案讀取錯誤 ');
+          }
+          else {
+            response.writeHead(200, {
+              'Content-Type': 'text/css'
+            });
+
+            // 傳送回應內容。
+            response.write(data);
+            response.end();
+          }
+        });
+
+        break;     
+
+      case '/js/index.js':
+        fs.readFile('../htdocs/js/index.js', (err, data) => {
+          if (err) {
+            console.log(' 檔案讀取錯誤 ');
+          }
+          else {
+            response.writeHead(200, {
+              'Content-Type': 'application/javascript'
+            });
+
+            // 傳送回應內容。
+            response.write(data);
+            response.end();
+          }
+        });
+
+        break;     
+
       default:
         console.log(` 未定義的存取 : ${request.url}`);
        
