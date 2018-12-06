@@ -78,8 +78,8 @@
  4.
  5. http.createServer((request, response) => {
  6.   request.on('end', () => {
- 7.     console.log('Request method: ' + request.method);
- 8.     console.log('Request url: ' + request.url);
+ 7.     console.log(`Request method: ${request.method}`);
+ 8.     console.log(`Request url: ${request.url}`);
  9.   });
 10.
 11.   // 傳送 HTTP header
@@ -126,7 +126,7 @@
 12.     postData += chunk;
 13.
 14.     console.log(
-15.       '接收的 POST data 片段: [' + chunk + '].'
+15.       `接收的 POST data 片段: [${chunk}].`
 16.     );
 17.   });
 18.
@@ -150,7 +150,7 @@
 36.         break;
 37.
 38.       default:
-39.         console.log('未定義的存取: ' + request.url);
+39.         console.log(`未定義的存取: ${request.url}`);
 40.
 41.         response.end();
 42.

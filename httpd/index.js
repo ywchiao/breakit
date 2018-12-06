@@ -3,7 +3,7 @@
  *  @brief      The entry file of the HTTP server.
  *  @author     Yiwei Chiao (ywchiao@gmail.com)
  *  @date       11/23/2018 created.
- *  @date       11/30/2018 last modified.
+ *  @date       12/06/2018 last modified.
  *  @version    0.1.0
  *  @since      0.1.0
  *  @copyright  MIT, © 2018 Yiwei Chiao
@@ -18,16 +18,45 @@ let http = require('http');
 http.createServer((request, response) => {
   // 取得 node.js 的 fs 模組
   let fs = require('fs');
+  let postData = ''; // POST 資料
 
-   fs.readFile('../htdocs/index.html', (err, data) => {
-    response.writeHead(200, {
-      'Content-Type': 'text/html'
-    });
+  // 利用 'data' event 消耗掉 data chunk;
+  // 'end' event 才會被 fired
+  request.on('data', (chunk) => {
+    postData += chunk;
 
-    response.write(data);
+    console.log(
+      ` 接收的 POST data ⽚段 : [${chunk}].`
+    );
+  });
 
-    // 傳送回應內容。
-    response.end();
+  request.on('end', () => {
+    switch (request.url) {
+      case '/':
+        fs.readFile('../htdocs/index.html', (err, data) => {
+          if (err) {
+            console.log(' 檔案讀取錯誤 ');
+          }
+          else {
+            response.writeHead(200, {
+              'Content-Type': 'text/html'
+            });
+
+            // 傳送回應內容。
+            response.write(data);
+            response.end();
+          }
+        });
+
+        break;
+     
+      default:
+        console.log(` 未定義的存取 : ${request.url}`);
+       
+        response.end();
+
+        break;
+    }
   });
 }).listen(8088);
 
