@@ -66,7 +66,7 @@ http.createServer((request, response) => {
           }
         });
 
-        break;     
+        break;
 
       case '/js/index.js':
         fs.readFile('../htdocs/js/index.js', (err, data) => {
@@ -84,11 +84,11 @@ http.createServer((request, response) => {
           }
         });
 
-        break;     
+        break;
 
       default:
         console.log(` 未定義的存取 : ${request.url}`);
-       
+
         response.end();
 
         break;
