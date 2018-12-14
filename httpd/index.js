@@ -15,6 +15,23 @@
 
 let http = require('http');
 
+const routingTable = {
+  '/': {
+    url: '../htdocs/index.html',
+    mime: 'text/html'
+  },
+
+  '/assets/css/styles.css': {
+    url: '../htdocs/assets/css/styles.css',
+    mime: 'text/css'
+  },
+
+  '/js/index.js': {
+    url: '../htdocs/js/index.js',
+    mime: 'application/javascript'
+  },
+};
+
 /**
   * 利用 http.ServerResponse 物件回傳檔案內容
   *
@@ -59,29 +76,16 @@ http.createServer((request, response) => {
   });
 
   request.on('end', () => {
-    switch (request.url) {
-     case '/':
-        serve(response, '../htdocs/index.html', 'text/html');
+     if (request.url in routingTable) {
+       let obj = routingTable[request.url];
 
-        break;
+       serve(response, obj.url, obj.mime);
+     }
+     else {
+       console.log(' 未定義的存取: ' + request.url);
 
-      case '/assets/css/styles.css':
-        serve(response, '../htdocs/assets/css/styles.css', 'text/css');
-
-        break;
-
-      case '/js/index.js':
-        serve(response, '../htdocs/js/index.js', 'application/javascript');
-
-        break;
-
-      default:
-        console.log(' 未定義的存取: ' + request.url);
-
-        response.end();
-
-        break;
-    }
+       response.end();
+     }
   });
 }).listen(8088);
 
