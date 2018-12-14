@@ -151,7 +151,7 @@ http.createServer((request, response) => {
         break;
 
       default:
-        console.log('未定義的存取: ' + request.url);
+        console.log(' 未定義的存取: ' + request.url);
 
         response.end();
 

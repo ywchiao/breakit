@@ -3,7 +3,7 @@
  *  @brief      The entry file of the HTTP server.
  *  @author     Yiwei Chiao (ywchiao@gmail.com)
  *  @date       11/23/2018 created.
- *  @date       12/06/2018 last modified.
+ *  @date       12/14/2018 last modified.
  *  @version    0.1.0
  *  @since      0.1.0
  *  @copyright  MIT, © 2018 Yiwei Chiao
@@ -14,6 +14,34 @@
 'use strict';
 
 let http = require('http');
+
+/**
+  * 利用 http.ServerResponse 物件回傳檔案內容
+  *
+  * @name serve
+  * @function
+  * @param response - http.ServerResponse 物件
+  * @param fname - 要回傳的檔案名
+  * @param mime - 回傳檔案內容的 MIME_type
+  * @returns {undefined}
+  */
+let serve = (response, fname, mime) => {
+  let fs = require('fs');
+
+  fs.readFile(fname, (err, data) => {
+    if (err) {
+      console.log('檔案讀取錯誤');
+    }
+    else {
+      response.writeHead(200, {
+        'Content-Type': mime
+      });
+
+      response.write(data);
+      response.end();
+    }
+  });
+};
 
 http.createServer((request, response) => {
   // 取得 node.js 的 fs 模組
@@ -32,62 +60,23 @@ http.createServer((request, response) => {
 
   request.on('end', () => {
     switch (request.url) {
-      case '/':
-        fs.readFile('../htdocs/index.html', (err, data) => {
-          if (err) {
-            console.log(' 檔案讀取錯誤 ');
-          }
-          else {
-            response.writeHead(200, {
-              'Content-Type': 'text/html'
-            });
-
-            // 傳送回應內容。
-            response.write(data);
-            response.end();
-          }
-        });
+     case '/':
+        serve(response, '../htdocs/index.html', 'text/html');
 
         break;
 
       case '/assets/css/styles.css':
-        fs.readFile('../htdocs/assets/css/styles.css', (err, data) => {
-          if (err) {
-            console.log(' 檔案讀取錯誤 ');
-          }
-          else {
-            response.writeHead(200, {
-              'Content-Type': 'text/css'
-            });
-
-            // 傳送回應內容。
-            response.write(data);
-            response.end();
-          }
-        });
+        serve(response, '../htdocs/assets/css/styles.css', 'text/css');
 
         break;
 
       case '/js/index.js':
-        fs.readFile('../htdocs/js/index.js', (err, data) => {
-          if (err) {
-            console.log(' 檔案讀取錯誤 ');
-          }
-          else {
-            response.writeHead(200, {
-              'Content-Type': 'application/javascript'
-            });
-
-            // 傳送回應內容。
-            response.write(data);
-            response.end();
-          }
-        });
+        serve(response, '../htdocs/js/index.js', 'application/javascript');
 
         break;
 
       default:
-        console.log(` 未定義的存取 : ${request.url}`);
+        console.log(' 未定義的存取: ' + request.url);
 
         response.end();
 
