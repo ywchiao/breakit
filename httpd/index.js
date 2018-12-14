@@ -15,22 +15,7 @@
 
 let http = require('http');
 
-const routingTable = {
-  '/': {
-    url: '../htdocs/index.html',
-    mime: 'text/html'
-  },
-
-  '/styles.css': {
-    url: '../htdocs/assets/css/styles.css',
-    mime: 'text/css'
-  },
-
-  '/breakit.js': {
-    url: '../htdocs/js/index.js',
-    mime: 'application/javascript'
-  },
-};
+const routingTable = require('./config.json');
 
 /**
   * 利用 http.ServerResponse 物件回傳檔案內容

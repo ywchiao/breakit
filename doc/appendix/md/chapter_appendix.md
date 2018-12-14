@@ -1,6 +1,6 @@
 <!---
   @file       chapter_appendix.md
-  @date       12/06/2018 created.
+  @date       12/14/2018 created.
   @copyright  CC-BY, (C) 2017 Yiwei Chiao
   @detail
     This file is machine-generated. DONOT MODIFY IT DIRECTLY.
@@ -317,7 +317,7 @@
 [firefox]: https://www.mozilla.org/zh-TW/firefox/
 [jade]: http://jade-lang.com/
 [jinja]: http://jinja.pocoo.org/
-[mdnDOM]: https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
+[mdnDOM]: https://developer.mozilla.org/zh-TW/docs/Web/API/Document_Object_Model
 [mdnSVG]: https://developer.mozilla.org/kab/docs/Web/SVG
 [mdnXML]: https://developer.mozilla.org/en-US/docs/XML_introduction
 [PHP]: https://secure.php.net/
@@ -358,6 +358,9 @@
 [readfilesync]: https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
 [http_inmsg]: https://nodejs.org/api/http.html#http_class_http_incomingmessage
 [MIME_type]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
+[JSON]: https://www.json.org/
+[breakit.js]: https://github.com/ywchiao/breakit.js
+[mdnCanvas]: https://developer.mozilla.org/zh-TW/docs/Web/API/Canvas_API/Tutorial
 [Unicode]: https://zh.wikipedia.org/wiki/Unicode
 [utf8]: https://zh.wikipedia.org/wiki/UTF-8
 [sokobanjs]: https://github.com/ywchiao/sokoban.js.git

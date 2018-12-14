@@ -1,0 +1,16 @@
+{
+  "/": {
+    "url": "../htdocs/index.html",
+    "mime": "text/html"
+  },
+
+  "/styles.css": {
+    "url": "../htdocs/assets/css/styles.css",
+    "mime": "text/css"
+  },
+
+  "/breakit.js": {
+    "url": "../htdocs/js/index.js",
+    "mime": "application/javascript"
+  }
+}
