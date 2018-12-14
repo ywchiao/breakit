@@ -21,12 +21,12 @@ const routingTable = {
     mime: 'text/html'
   },
 
-  '/assets/css/styles.css': {
+  '/styles.css': {
     url: '../htdocs/assets/css/styles.css',
     mime: 'text/css'
   },
 
-  '/js/index.js': {
+  '/breakit.js': {
     url: '../htdocs/js/index.js',
     mime: 'application/javascript'
   },
